@@ -1,0 +1,18 @@
+module.exports = (survey) => {
+  return `
+    <html>
+      <body>
+        <div style="text-align:center">
+          <h3>Selam</h3>
+          <p>${survey.body}</p>
+          <div>
+            <a href="${redirectDomain}/api/surveys/thanks">Yes</a>
+          </div>
+          <div>
+            <a href="${redirectDomain}/api/surveys/thanks">No</a>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+};
