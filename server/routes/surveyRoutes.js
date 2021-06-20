@@ -1,8 +1,8 @@
 const _ = require("lodash");
 const { Path } = require("path-parser");
 const { URL } = require("url");
-const requestLogin = require("../middlewares/requireLogin");
-const requestCredit = require("../middlewares/requireCredits");
+const requireLogin = require("../middlewares/requireLogin");
+const requireCredit = require("../middlewares/requireCredits");
 const mongoose = require("mongoose");
 const Mailer = require("../services/Mailer");
 const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
@@ -10,6 +10,14 @@ const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
 const Survey = mongoose.model("surveys");
 
 module.exports = (app) => {
+  app.get("/api/surveys", requireLogin, async (req, res) => {
+    const surveys = await Survey.find({ _user: req.body.id }).select({
+      recipients: false,
+    });
+
+    res.send(surveys);
+  });
+
   app.get("/api/surveys/:surveyId/:choice/thanks", async (req, res) => {
     res.send("Thanks for voting!");
   });
@@ -45,7 +53,7 @@ module.exports = (app) => {
     res.send({});
   });
 
-  app.post("/api/surveys", requestLogin, requestCredit, async (req, res) => {
+  app.post("/api/surveys", requireLogin, requireCredit, async (req, res) => {
     const { title, subject, body, recipients } = req.body;
 
     const survey = new Survey({
