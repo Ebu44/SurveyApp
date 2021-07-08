@@ -1,6 +1,4 @@
 # SurveyApp
-
-Fullstack Survey app for best customer experience
 ---------------------------------------
 
 # Run with frontend-backend
